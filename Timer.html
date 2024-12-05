@@ -1,132 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Timer in Background</title>
-    <style>
-        /* Your styling code for the homepage here */
-        
-        #timer-container {
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            padding: 15px 20px;
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            text-align: center;
-            z-index: 1000;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catify Study Timer</title>
+  <link rel="stylesheet" href="timerstyle.css">
+  <style>
+    /* Timer Page Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
 
-        #countdown {
-            font-size: 36px;
-            font-weight: bold;
-            color: #2e7d32;
-            margin: 20px 0;
-        }
+    #timer-container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px 30px;
+      text-align: center;
+      width: 300px;
+    }
 
-        /* Buttons and other styling... */
-    </style>
+    #timer-container h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    #countdown {
+      font-size: 36px;
+      font-weight: bold;
+      color: #2e7d32;
+      margin: 20px 0;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin: 10px 0 5px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 15px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    button:disabled {
+      background-color: #cccccc;
+      cursor: not-allowed;
+    }
+
+    #status {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+
+    button#resetButton {
+      background-color: #ff5722;
+    }
+
+    button#resetButton:hover {
+      background-color: #e64a19;
+    }
+
+    #backButton {
+      position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #28a745;
+    color: white;
+    padding: 8px 10px;
+    border-radius: 10%;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+    }
+
+    #backButton:hover {
+      background-color: #f5081b;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Timer Container (fixed at the top-right) -->
-    <div id="timer-container">
-        <h1>Timer</h1>
-        <div id="countdown">00:00</div>
-        <button id="startButton">Start</button>
-        <button id="stopButton" disabled>Stop</button>
-        <button id="resetButton" disabled>Reset</button>
+  <div id="timer-container">
+    <h1>Catify Study Timer</h1>
+    <div>
+      <label for="studyTimeInput">Study Time (minutes):</label>
+      <input type="number" id="studyTimeInput" value="25" min="1">
     </div>
+    
+    <div>
+      <label for="breakTimeInput">Break Time (minutes):</label>
+      <input type="number" id="breakTimeInput" value="5" min="1">
+    </div>
+    
+    <div id="status">Timer Status</div>
+    <div id="countdown">00:00</div>
+  
+    <div>
+      <button id="startButton">Start</button>
+      <button id="stopButton" disabled>Pause</button>
+      <button id="resetButton" disabled>Reset</button>
+    </div>
+  </div>
+  
+  <!-- Notification Container -->
+  <div id="notification-container"></div>
+  
+  <button id="backButton" onclick="window.location.href = 'homepage.html';">Back</button>
 
-    <!-- Rest of your homepage content goes here -->
+  <script>
+    let timerInterval = null;
+    let isStudySession = true; // Start with a study session
+    let currentTime = 0; // Keeps track of remaining time
+    let isPaused = false;
 
-    <script>
-        let timerInterval = null;
-        let currentTime = 0; // Keeps track of the remaining time
-        let isPaused = false;
+    // Select DOM elements
+    const statusEl = document.getElementById("status");
+    const countdownEl = document.getElementById("countdown");
+    const studyTimeInput = document.getElementById("studyTimeInput");
+    const breakTimeInput = document.getElementById("breakTimeInput");
+    const startButton = document.getElementById("startButton");
+    const stopButton = document.getElementById("stopButton");
+    const resetButton = document.getElementById("resetButton");
+    const notificationContainer = document.getElementById("notification-container");
 
-        // DOM Elements
-        const countdownEl = document.getElementById("countdown");
-        const startButton = document.getElementById("startButton");
-        const stopButton = document.getElementById("stopButton");
-        const resetButton = document.getElementById("resetButton");
+    // Format time (MM:SS)
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = seconds % 60;
+      return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+    }
 
-        // Initialize the timer based on stored value from localStorage
-        function loadTimer() {
-            const savedTime = localStorage.getItem("currentTime");
-            if (savedTime) {
-                currentTime = parseInt(savedTime);
-                updateTimerDisplay(currentTime);
-                startButton.disabled = false;
-                stopButton.disabled = false;
-                resetButton.disabled = false;
-            }
+    // Update the timer display
+    function updateTimerDisplay(seconds) {
+      countdownEl.textContent = formatTime(seconds);
+    }
+
+    // Show notification
+    function showNotification(message) {
+      const notification = document.createElement('div');
+      notification.classList.add('notification');
+      notification.textContent = message;
+      notificationContainer.appendChild(notification);
+      setTimeout(() => {
+        notification.remove();
+      }, 3000);
+    }
+
+    // Start or resume the timer
+    function startTimer() {
+      if (!isPaused) {
+        // Initialize the time based on user input
+        const studyTime = parseInt(studyTimeInput.value) * 60; // Convert minutes to seconds
+        const breakTime = parseInt(breakTimeInput.value) * 60; // Convert minutes to seconds
+        currentTime = isStudySession ? studyTime : breakTime;
+      }
+
+      statusEl.textContent = isStudySession ? "Study Session" : "Break Time";
+      updateTimerDisplay(currentTime);
+
+      timerInterval = setInterval(() => {
+        currentTime--;
+        updateTimerDisplay(currentTime);
+
+        // Save current time to localStorage
+        localStorage.setItem('currentTime', currentTime);
+
+        if (currentTime <= 0) {
+          clearInterval(timerInterval);
+          showNotification(isStudySession ? "Time for a break!" : "Time to study!");
+          isStudySession = !isStudySession; // Toggle session
+          isPaused = false; // Reset pause state for the next session
+          startTimer(); // Automatically start the next session
         }
+      }, 1000);
 
-        // Start or resume the timer
-        function startTimer() {
-            if (isPaused) {
-                isPaused = false;
-            } else {
-                currentTime = 25 * 60; // Set to 25 minutes by default or fetch from input if needed
-            }
+      // Disable/Enable buttons
+      startButton.disabled = true;
+      stopButton.disabled = false;
+      resetButton.disabled = false;
+    }
 
-            timerInterval = setInterval(() => {
-                currentTime--;
-                updateTimerDisplay(currentTime);
+    // Pause the timer
+    function pauseTimer() {
+      clearInterval(timerInterval);
+      isPaused = true;
+      statusEl.textContent = "Paused";
+      startButton.disabled = false;
+      stopButton.disabled = true;
+    }
 
-                // Save the current time to localStorage to persist it
-                localStorage.setItem("currentTime", currentTime);
+    // Reset the timer
+    function resetTimer() {
+      clearInterval(timerInterval);
+      isStudySession = true;
+      isPaused = false;
+      
+      // Reset the timer display to the input values
+      const studyTime = parseInt(studyTimeInput.value) * 60; // Convert minutes to seconds
+      currentTime = studyTime;
+      updateTimerDisplay(currentTime);
 
-                if (currentTime <= 0) {
-                    clearInterval(timerInterval);
-                    alert("Time's up!");
-                }
-            }, 1000);
+      statusEl.textContent = "Timer Reset";
+      startButton.disabled = false;
+      stopButton.disabled = true;
+      resetButton.disabled = false;
+    }
 
-            startButton.disabled = true;
-            stopButton.disabled = false;
-            resetButton.disabled = false;
-        }
+    // Attach event listeners
+    startButton.addEventListener("click", startTimer);
+    stopButton.addEventListener("click", pauseTimer);
+    resetButton.addEventListener("click", resetTimer);
 
-        // Pause the timer
-        function pauseTimer() {
-            clearInterval(timerInterval);
-            isPaused = true;
-            localStorage.setItem("currentTime", currentTime);
-            startButton.disabled = false;
-            stopButton.disabled = true;
-        }
-
-        // Reset the timer
-        function resetTimer() {
-            clearInterval(timerInterval);
-            currentTime = 25 * 60; // Reset to 25 minutes
-            updateTimerDisplay(currentTime);
-            localStorage.removeItem("currentTime");
-            startButton.disabled = false;
-            stopButton.disabled = true;
-            resetButton.disabled = true;
-        }
-
-        // Update the timer display
-        function updateTimerDisplay(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            countdownEl.textContent = `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
-        }
-
-        // Load the timer state when the page loads
-        loadTimer();
-
-        // Event Listeners
-        startButton.addEventListener("click", startTimer);
-        stopButton.addEventListener("click", pauseTimer);
-        resetButton.addEventListener("click", resetTimer);
-    </script>
-<button id="backButton" onclick="window.location.href = 'homepage.html';">back</button>
+    // Load saved timer state on page load
+    window.onload = function() {
+      if (localStorage.getItem('currentTime')) {
+        currentTime = parseInt(localStorage.getItem('currentTime'));
+        updateTimerDisplay(currentTime);
+      }
+    }
+  </script>
 
 </body>
 </html>
