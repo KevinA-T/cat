@@ -13,7 +13,7 @@
         <form action="">
             <h1>Login</h1>
             <div class="textbox">
-                <input type="text" placeholder="UserName" required>
+                <input type="text" placeholder="Username" required>
                 <i class='bx bxs-user'></i>
             </div>
             <div class="textbox">
@@ -26,14 +26,26 @@
                 <a href="#">Forget Password</a>
             </div>
 
-            <button class="button" type="submit"> Login</button>
+            <button class="button" onclick="redirectToDashboard()">Login</button>
             <div class="register">
                 <p>Don't have an account ?
-                    <a href="register.html"> Register</a>
+                    <a href="register.html"onclick="showRegisterPage()"> Register</a>
                 </p>
                 
             </div>
         </form>
     </div>
+
+    
+        <script>
+             function showRegisterPage() {
+      document.getElementById("loginPage").style.display = "none";
+      document.getElementById("registerPage").style.display = "block";
+    }
+        function redirectToDashboard() {
+            window.location.href = "homepage.html"; // Replace with the actual URL of your dashboard
+          }</script>
+    
 </body>
 </html>
+

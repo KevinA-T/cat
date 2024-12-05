@@ -1,0 +1,164 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: url('cattimer.webp') no-repeat;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  /* Timer Container */
+  #timer-container {
+    background-color: #fcfafb ;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px 30px;
+    text-align: center;
+    width: 300px;
+  }
+  
+  #timer-container h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  #countdown {
+    font-size: 36px;
+    font-weight: bold;
+    color: #2e7d32;
+    margin: 20px 0;
+  }
+  
+  label {
+    display: block;
+    font-weight: bold;
+    margin: 10px 0 5px;
+  }
+  
+  input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  #status {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  button#resetButton {
+    background-color: #ff5722;
+  }
+  
+  button#resetButton:hover {
+    background-color: #e64a19;
+  }
+  
+  /* Notification Styles */
+  #notification-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* Base notification styles */
+  .notification {
+    padding: 15px 20px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s;
+  }
+  
+  /* Notification Types */
+  .notification.info {
+    background-color: #007bff;
+  }
+  
+  .notification.success {
+    background-color: #28a745;
+  }
+  
+  .notification.warning {
+    background-color: #ffc107;
+    color: #000;
+  }
+  
+  .notification.error {
+    background-color: #dc3545;
+  }
+  
+  /* Animations */
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  
+  #backButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease;
+}
+
+#backButton:hover {
+    background-color: #e01515;
+}

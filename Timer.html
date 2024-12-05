@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer in Background</title>
+    <style>
+        /* Your styling code for the homepage here */
+        
+        #timer-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 20px;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        #countdown {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2e7d32;
+            margin: 20px 0;
+        }
+
+        /* Buttons and other styling... */
+    </style>
+</head>
+<body>
+
+    <!-- Timer Container (fixed at the top-right) -->
+    <div id="timer-container">
+        <h1>Timer</h1>
+        <div id="countdown">00:00</div>
+        <button id="startButton">Start</button>
+        <button id="stopButton" disabled>Stop</button>
+        <button id="resetButton" disabled>Reset</button>
+    </div>
+
+    <!-- Rest of your homepage content goes here -->
+
+    <script>
+        let timerInterval = null;
+        let currentTime = 0; // Keeps track of the remaining time
+        let isPaused = false;
+
+        // DOM Elements
+        const countdownEl = document.getElementById("countdown");
+        const startButton = document.getElementById("startButton");
+        const stopButton = document.getElementById("stopButton");
+        const resetButton = document.getElementById("resetButton");
+
+        // Initialize the timer based on stored value from localStorage
+        function loadTimer() {
+            const savedTime = localStorage.getItem("currentTime");
+            if (savedTime) {
+                currentTime = parseInt(savedTime);
+                updateTimerDisplay(currentTime);
+                startButton.disabled = false;
+                stopButton.disabled = false;
+                resetButton.disabled = false;
+            }
+        }
+
+        // Start or resume the timer
+        function startTimer() {
+            if (isPaused) {
+                isPaused = false;
+            } else {
+                currentTime = 25 * 60; // Set to 25 minutes by default or fetch from input if needed
+            }
+
+            timerInterval = setInterval(() => {
+                currentTime--;
+                updateTimerDisplay(currentTime);
+
+                // Save the current time to localStorage to persist it
+                localStorage.setItem("currentTime", currentTime);
+
+                if (currentTime <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Time's up!");
+                }
+            }, 1000);
+
+            startButton.disabled = true;
+            stopButton.disabled = false;
+            resetButton.disabled = false;
+        }
+
+        // Pause the timer
+        function pauseTimer() {
+            clearInterval(timerInterval);
+            isPaused = true;
+            localStorage.setItem("currentTime", currentTime);
+            startButton.disabled = false;
+            stopButton.disabled = true;
+        }
+
+        // Reset the timer
+        function resetTimer() {
+            clearInterval(timerInterval);
+            currentTime = 25 * 60; // Reset to 25 minutes
+            updateTimerDisplay(currentTime);
+            localStorage.removeItem("currentTime");
+            startButton.disabled = false;
+            stopButton.disabled = true;
+            resetButton.disabled = true;
+        }
+
+        // Update the timer display
+        function updateTimerDisplay(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            countdownEl.textContent = `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+        }
+
+        // Load the timer state when the page loads
+        loadTimer();
+
+        // Event Listeners
+        startButton.addEventListener("click", startTimer);
+        stopButton.addEventListener("click", pauseTimer);
+        resetButton.addEventListener("click", resetTimer);
+    </script>
+<button id="backButton" onclick="window.location.href = 'homepage.html';">back</button>
+
+</body>
+</html>

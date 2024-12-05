@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catify Homepage</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="homestyle.css">
+
+</head>
+<body>
+
+<header>
+    <h1>Welcome to Catify</h1>
+    <p>Your Smart Learning Assistant</p>
+</header>
+
+<div id="timer-container">
+    <h1>Timer</h1>
+    <div id="countdown">25:00</div>
+    <a href="timer.html"><button>Go to Timer Page</button></a>
+</div>
+
+<script>
+    let currentTime = 25 * 60; // Default timer (25 minutes)
+
+    const countdownEl = document.getElementById("countdown");
+
+    // Load saved timer from localStorage (if any)
+    if (localStorage.getItem('currentTime')) {
+        currentTime = parseInt(localStorage.getItem('currentTime'));
+        startTimer();
+    }
+
+    // Start the timer (will update continuously)
+    function startTimer() {
+        setInterval(() => {
+            if (currentTime > 0) {
+                currentTime--;
+                updateTimerDisplay();
+
+                // Update the time in localStorage to persist the timer
+                localStorage.setItem('currentTime', currentTime);
+            }
+        }, 1000);
+    }
+
+    // Update the timer display in the top-right corner
+    function updateTimerDisplay() {
+        const minutes = Math.floor(currentTime / 60);
+        const seconds = currentTime % 60;
+        countdownEl.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    }
+</script>
+<div class="container">
+    <div class="feature-box">
+        <h2>Study reminder</h2>
+        <p>Automatic reminders for study and break sessions to help you stay disciplined.</p>
+        <button onclick="window.location.href = 'Timer.html';">Set Reminder</button>        </div>
+
+    <div class="feature-box">
+        <h2>Study techniques</h2>
+        <p>Get study techniques and ideal study times based on a survey of your learning habits.</p>
+        <button onclick="window.location.href = 'Timer.html';">Set Reminder</button>        </div>
+    </div>
+
+    <div class="feature-box">
+        <h2>Studying progress</h2>
+        <p>Track your study progress and see how well you're doing in different subjects.</p>
+        <button onclick="window.location.href = 'Timer.html';">Set Reminder</button>        </div>
+    </div>
+
+    <div class="feature-box">
+        <h2>Calendar Sync</h2>
+        <p>Sync your study schedule with your personal calendar to avoid scheduling conflicts.</p>
+        <button onclick="window.location.href = 'Timer.html';">Set Reminder</button>        </div>
+    </div>
+
+    <div class="feature-box">
+        <h2>Study references</h2>
+        <p>Receive personalized learning material suggestions powered by AI.</p>
+        <button onclick="window.location.href = 'Timer.html';">Set Reminder</button>        </div>
+    </div>
+
+    <div class="feature-box">
+        <h2>Calming Music</h2>
+        <p>Listen to calming music to improve focus and concentration while studying.</p>
+        <button onclick="window.location.href = 'Timer.html';">Set Reminder</button>        </div>
+    </div>
+
+    <div class="feature-box">
+        <h2>Notes and To-Do List</h2>
+        <p>Keep track of important notes and create to-do lists to stay organized.</p>
+        <button onclick="window.location.href = 'Timer.html';">Set Reminder</button>        </div>
+    </div>
+</div>
+
+<button id="backButton" onclick="window.location.href = 'index.html';">Logout</button>
+</body>
+</html>
