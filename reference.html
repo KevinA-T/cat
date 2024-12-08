@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study References</title>
+  <link rel="stylesheet" href="reference.css">
+</head>
+<body>
+  <div id="app">
+    <h1>Study References</h1>
+    <form id="referenceForm">
+      <label for="topic">Enter a Topic:</label>
+      <input type="text" id="topic" placeholder="e.g., Quantum Physics" required>
+      <button type="submit">Get References</button>
+    </form>
+    <div id="loading" style="display: none;">Fetching suggestions...</div>
+    <div id="references">
+      <h2>Suggestions</h2>
+      <ul id="referencesList"></ul>
+    </div>
+    <button id="backButton" onclick="window.location.href = 'homepage.html';">Back to Homepage</button>
+  </div>
+  <div id="music-controls">
+    <label for="trackSelect">Choose your music:</label>
+    <select id="trackSelect" onchange="changeTrack(this.value)">
+      <option value="0">Relaxing Waves</option>
+      <option value="1">Calm Piano</option>
+      <option value="2">Forest Ambience</option>
+    </select>
+  </div>
+
+  <!-- Display current track -->
+  <div id="current-track">
+    <p id="track-name">Current Track: Relaxing Waves</p>
+  </div>
+  <script src="music.js"></script>
+  <script src="reference.js"></script>
+</body>
+</html>

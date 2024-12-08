@@ -1,120 +1,142 @@
-
+/* General Styling */
 body {
     font-family: 'Poppins', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f8f9fa;
+    background-color: #f8f9fc;
     color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 header {
+    width: 100%;
     background-color: #007bff;
-    color: white;
-    padding: 20px;
+    color: #fff;
     text-align: center;
+    padding: 20px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
-    margin: 0;
     font-size: 2.5em;
+    margin: 0;
 }
 
-.container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 20px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+header p {
+    font-size: 1.2em;
+    margin: 5px 0 0;
+}
+
+/* Floating Timer Styling */
+#floating-timer {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: center;
+    z-index: 1000; /* Ensure it stays above other elements */
+    width: 200px;
+}
+
+#floating-timer h2 {
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+#countdown {
+    font-size: 2em;
+    font-weight: bold;
+    margin: 15px 0;
+    color: #2e7d32;
+}
+
+#floating-timer button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#floating-timer button:hover {
+    background-color: #0056b3;
+}
+
+/* Features Section */
+#features-section {
+    display: flex;
+    flex-wrap: wrap;
     gap: 20px;
+    max-width: 1000px;
+    margin: 20px auto;
+    justify-content: center;
 }
 
 .feature-box {
     background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
     padding: 20px;
-    border-radius: 8px;
+    text-align: center;
+    width: 30%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .feature-box:hover {
-    transform: translateY(-10px);
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
-.feature-box h2 {
-    font-size: 1.6em;
+.feature-box h3 {
+    color: #007bff;
     margin-bottom: 10px;
 }
 
 .feature-box p {
-    font-size: 1em;
     color: #555;
+    font-size: 0.9em;
+    margin-bottom: 20px;
 }
 
 .feature-box button {
     background-color: #007bff;
     color: white;
-    padding: 10px 20px;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
+    padding: 10px 15px;
     cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 10px;
+    transition: background-color 0.3s ease;
 }
 
 .feature-box button:hover {
     background-color: #0056b3;
 }
 
-.footer {
-    background-color: #343a40;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    margin-top: 40px;
+/* Footer (Logout Button) */
+footer {
+    margin-top: 20px;
 }
 
-@media (max-width: 768px) {
-    .container {
-        grid-template-columns: 1fr;
-    }
-}
-
-#backButton {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #28a745;
+#logoutButton {
+    background-color: #ff5722;
     color: white;
-    padding: 8px 10px;
-    border-radius: 10%;
     border: none;
-    cursor: pointer;
+    border-radius: 5px;
+    padding: 10px 20px;
     font-size: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-#backButton:hover {
-    background-color: #f50606;
+#logoutButton:hover {
+    background-color: #e64a19;
 }
-
-#timer-container {
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 15px 20px;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    text-align: center;
-    z-index: 1000;
-}
-
-#countdown {
-    font-size: 36px;
-    font-weight: bold;
-    color: #2e7d32;
-    margin: 20px 0;
-}
-
-/* Add more styling for homepage */

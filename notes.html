@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes & To-Do List</title>
+  <link rel="stylesheet" href="notes.css">
+</head>
+<body>
+  <div id="notes-todolist-container">
+    <h1>Notes & To-Do List</h1>
+
+    <!-- Notes Section -->
+    <div id="notes-section">
+      <h2>Notes</h2>
+      <textarea id="note-input" placeholder="Write your note here..."></textarea>
+      <button id="add-note-btn">Add Note</button>
+      <ul id="notes-list"></ul>
+    </div>
+
+    <!-- To-Do Section -->
+    <div id="todo-section">
+      <h2>To-Do List</h2>
+      <input type="text" id="todo-input" placeholder="Enter a task...">
+      <button id="add-todo-btn">Add To-Do</button>
+      <ul id="todo-list"></ul>
+    </div>
+
+    <!-- Back to Homepage Button -->
+    <button id="back-home-btn" onclick="window.location.href = 'homepage.html';">Back to Homepage</button>
+  </div>
+  <div id="music-controls">
+    <label for="trackSelect">Choose your music:</label>
+    <select id="trackSelect" onchange="changeTrack(this.value)">
+      <option value="0">Relaxing Waves</option>
+      <option value="1">Calm Piano</option>
+      <option value="2">Forest Ambience</option>
+    </select>
+  </div>
+
+  <!-- Display current track -->
+  <div id="current-track">
+    <p id="track-name">Current Track: Relaxing Waves</p>
+  </div>
+  <script src="music.js"></script>
+  <script src="notes.js"></script>
+</body>
+</html>

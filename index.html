@@ -3,49 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv=“X-UA-Compatible” content=“ie=edge”>
-    <title>Document</title>
+    <title>Login</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <div class="main">
-        <form action="">
-            <h1>Login</h1>
-            <div class="textbox">
-                <input type="text" placeholder="Username" required>
-                <i class='bx bxs-user'></i>
-            </div>
-            <div class="textbox">
-                <input type="password" placeholder="Password" required>
-                <i class='bx bxs-lock-alt'></i>
-            </div>
+<div class="main">
+    <form id="loginForm">
+        <h1>Login</h1>
+        <div class="textbox">
+            <input type="email" id="loginEmail" placeholder="Email" required>
+            <i class='bx bxs-user'></i>
+        </div>
+        <div class="textbox">
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <i class='bx bxs-lock-alt'></i>
+        </div>
 
-            <div class="checkbox">
-                <label> <input type="checkbox"> Remember Me</label>
-                <a href="#">Forget Password</a>
-            </div>
+        <div class="checkbox">
+            <label><input type="checkbox"> Remember Me</label>
+            <a href="#">Forget Password</a>
+        </div>
 
-            <button class="button" onclick="redirectToDashboard()">Login</button>
-            <div class="register">
-                <p>Don't have an account ?
-                    <a href="register.html"onclick="showRegisterPage()"> Register</a>
-                </p>
-                
-            </div>
-        </form>
-    </div>
+        <button type="button" onclick="loginUser()">Login</button>
+        <div class="register">
+            <p>Don't have an account? <a href="register.html">Register</a></p>
+        </div>
+    </form>
+</div>
 
-    
-        <script>
-             function showRegisterPage() {
-      document.getElementById("loginPage").style.display = "none";
-      document.getElementById("registerPage").style.display = "block";
+<script>
+    function loginUser() {
+        const email = document.getElementById("loginEmail").value;
+        const password = document.getElementById("loginPassword").value;
+
+        const storedUser = localStorage.getItem(email);
+
+        if (!storedUser) {
+            alert("User not found! Please register first.");
+            return;
+        }
+
+        const userData = JSON.parse(storedUser);
+
+        if (userData.password !== password) {
+            alert("Incorrect password! Please try again.");
+            return;
+        }
+
+        alert(`Welcome back, ${userData.username}!`);
+        window.location.href = "homepage.html"; // Redirect to homepage
     }
-        function redirectToDashboard() {
-            window.location.href = "homepage.html"; // Replace with the actual URL of your dashboard
-          }</script>
-    
+</script>
+<script>
+    function showNotification(type, message) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification ${type}`;
+        
+        // Add icon based on type
+        let icon = '';
+        if (type === 'success') icon = '<i class="bx bxs-check-circle"></i>';
+        if (type === 'error') icon = '<i class="bx bxs-error-circle"></i>';
+        if (type === 'info') icon = '<i class="bx bxs-info-circle"></i>';
+        
+        // Add content
+        notification.innerHTML = `${icon} <span>${message}</span>`;
+        
+        // Append to notification container
+        const container = document.getElementById('notification-container');
+        container.appendChild(notification);
+        
+        // Remove notification after 3 seconds
+        setTimeout(() => {
+            notification.style.animation = 'fadeOut 0.3s ease';
+            notification.addEventListener('animationend', () => notification.remove());
+        }, 3000);
+    }
+</script>
+<script>
+function redirectToDashboard() {
+    const username = document.querySelector('input[placeholder="Username"]').value;
+    const password = document.querySelector('input[placeholder="Password"]').value;
+
+    if (username === 'test' && password === '1234') {
+        showNotification('success', 'Login successful!');
+        setTimeout(() => {
+            window.location.href = "homepage.html";
+        }, 1500); // Redirect after 1.5 seconds
+    } else {
+        showNotification('error', 'Invalid username or password!');
+    }
+}
+</script>
+<div id="notification-container"></div>
+
 </body>
 </html>
-

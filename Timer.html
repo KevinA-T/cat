@@ -89,24 +89,6 @@
       background-color: #e64a19;
     }
 
-    #backButton {
-      position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #28a745;
-    color: white;
-    padding: 8px 10px;
-    border-radius: 10%;
-    border: none;
-    cursor: pointer;
-    font-size: 16px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s ease;
-    }
-
-    #backButton:hover {
-      background-color: #f5081b;
-    }
   </style>
 </head>
 <body>
@@ -136,7 +118,6 @@
   <!-- Notification Container -->
   <div id="notification-container"></div>
   
-  <button id="backButton" onclick="window.location.href = 'homepage.html';">Back</button>
 
   <script>
     let timerInterval = null;
@@ -250,6 +231,22 @@
       }
     }
   </script>
+<div id="music-controls">
+  <label for="trackSelect">Choose your music:</label>
+  <select id="trackSelect" onchange="changeTrack(this.value)">
+    <option value="0">Relaxing Waves</option>
+    <option value="1">Calm Piano</option>
+    <option value="2">Forest Ambience</option>
+  </select>
+</div>
 
+<!-- Display current track -->
+<div id="current-track">
+  <p id="track-name">Current Track: Relaxing Waves</p>
+</div>
+<footer>
+  <button id="logoutButton" onclick="window.location.href = 'homepage.html';">back</button>
+</footer>
+<script src="music.js"></script>
 </body>
 </html>

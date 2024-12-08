@@ -162,3 +162,62 @@ body {
 #backButton:hover {
     background-color: #e01515;
 }
+
+#music-controls {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 1000;
+}
+
+#music-controls label {
+  font-size: 16px;
+  color: #333;
+}
+
+#music-controls select {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#current-track {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  background-color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-size: 16px;
+  color: #333;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+}
+footer {
+  margin-top: 20px;
+}
+
+#logoutButton {
+  background-color: #ff5722;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#logoutButton:hover {
+  background-color: #e64a19;
+}

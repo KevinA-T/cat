@@ -103,3 +103,71 @@ form .text h3 a{
 form .text h3 a:hover{
   text-decoration: underline;
 }
+
+/* Notification Container */
+#notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  width: 300px;
+}
+
+/* Notification Box */
+.notification {
+  background: rgba(255, 255, 255, 0.9);
+  border-left: 5px solid #4caf50; /* Green for success */
+  padding: 15px 20px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Different Notification Types */
+.notification.success {
+  border-left-color: #4caf50;
+}
+
+.notification.error {
+  border-left-color: #f44336;
+}
+
+.notification.info {
+  border-left-color: #2196f3;
+}
+
+/* Icon Inside Notifications */
+.notification i {
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+/* Animation for Fade-In Effect */
+@keyframes fadeIn {
+  from {
+      opacity: 0;
+      transform: translateX(50px);
+  }
+  to {
+      opacity: 1;
+      transform: translateX(0);
+  }
+}
+
+/* Animation for Fade-Out Effect */
+@keyframes fadeOut {
+  from {
+      opacity: 1;
+      transform: translateX(0);
+  }
+  to {
+      opacity: 0;
+      transform: translateX(50px);
+  }
+}
