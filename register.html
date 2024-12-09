@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registration</title>
+    <title>Register</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -22,10 +22,7 @@
         <div class="input-box">
             <input type="password" id="confirmPassword" placeholder="Confirm password" required>
         </div>
-        <div class="policy">
-            <input type="checkbox" id="terms" required>
-            <h3>I accept all terms & conditions</h3>
-        </div>
+    
         <div class="input-box button">
             <button type="button" onclick="registerUser()">Register</button>
         </div>
@@ -35,7 +32,24 @@
     </form>
 </div>
 
+<!-- Notification container -->
+<div id="notification-container"></div>
+
 <script>
+    function showNotification(type, message) {
+        const container = document.getElementById("notification-container");
+        const notification = document.createElement("div");
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `<span>${message}</span>`;
+        container.appendChild(notification);
+
+        // Automatically remove the notification after 3 seconds
+        setTimeout(() => {
+            notification.style.animation = "fadeOut 0.3s ease";
+            notification.addEventListener("animationend", () => notification.remove());
+        }, 3000);
+    }
+
     function registerUser() {
         const username = document.getElementById("username").value;
         const email = document.getElementById("email").value;
@@ -43,63 +57,79 @@
         const confirmPassword = document.getElementById("confirmPassword").value;
 
         if (password !== confirmPassword) {
-            alert("Passwords do not match!");
+            showNotification("error", "Passwords do not match!");
             return;
         }
 
-        // Save user data in localStorage
-        const userData = { username, email, password };
-        localStorage.setItem(email, JSON.stringify(userData));
+        // Get the users array from localStorage
+        const users = JSON.parse(localStorage.getItem("users")) || [];
 
-        alert("Registration successful! Please login.");
-        window.location.href = "index.html";
-    }
-</script>
-<script>
-  function showNotification(type, message) {
-      // Create notification element
-      const notification = document.createElement('div');
-      notification.className = `notification ${type}`;
-      
-      // Add icon based on type
-      let icon = '';
-      if (type === 'success') icon = '<i class="bx bxs-check-circle"></i>';
-      if (type === 'error') icon = '<i class="bx bxs-error-circle"></i>';
-      if (type === 'info') icon = '<i class="bx bxs-info-circle"></i>';
-      
-      // Add content
-      notification.innerHTML = `${icon} <span>${message}</span>`;
-      
-      // Append to notification container
-      const container = document.getElementById('notification-container');
-      container.appendChild(notification);
-      
-      // Remove notification after 3 seconds
-      setTimeout(() => {
-          notification.style.animation = 'fadeOut 0.3s ease';
-          notification.addEventListener('animationend', () => notification.remove());
-      }, 3000);
-  }
-</script>
-<script>
-  function registerUser() {
-    const name = document.querySelector('input[placeholder="Enter your name"]').value;
-    const email = document.querySelector('input[placeholder="Enter your email"]').value;
-    const password = document.querySelector('input[placeholder="Create password"]').value;
-    const confirmPassword = document.querySelector('input[placeholder="Confirm password"]').value;
+        // Check if the email is already registered
+        if (users.some(user => user.email === email)) {
+            showNotification("error", "Email already registered! Please login.");
+            return;
+        }
 
-    if (password === confirmPassword) {
-        showNotification('success', `Welcome ${name}, registration successful!`);
+        // Add the new user to the users array
+        users.push({ username, email, password });
+
+        // Save the updated users array back to localStorage
+        localStorage.setItem("users", JSON.stringify(users));
+
+        showNotification("success", "Registration successful! Redirecting to login...");
         setTimeout(() => {
             window.location.href = "index.html";
-        }, 1500); // Redirect to login after 1.5 seconds
-    } else {
-        showNotification('error', 'Passwords do not match!');
+        }, 1500);
     }
-}
-
 </script>
-<div id="notification-container"></div>
 
+<style>
+    /* Notification Styles */
+    #notification-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+
+    .notification {
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 10px 20px;
+        margin-bottom: 10px;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .notification.success {
+        border-left: 5px solid #4caf50;
+    }
+
+    .notification.error {
+        border-left: 5px solid #f44336;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+    }
+</style>
 </body>
 </html>

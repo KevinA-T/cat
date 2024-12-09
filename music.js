@@ -1,61 +1,74 @@
-// Create an audio element
-const audioPlayer = new Audio();
+const clientId = '26da6796a9aa4653bbbddf65afbbc617'; // Replace with your Client ID
+const secretclientId = 'c052af15f7504bbdb45c676f0c755dfd'; // Replace with your Client ID
+const redirectUri = 'http://127.0.0.1:5500'; // Ensure this matches the URI added in Spotify dashboard
+let accessToken = '';
+let isPlaying = false;
 
-// List of calming music tracks
-const tracks = [{ name: "Relaxing Waves", src: "audio/LOFI.mp3" },{ name: "Calm Piano", src: "audio/piano relax.mp3" },{ name: "Forest Ambience", src: "audio/relax piano.mp3" }];
-// Get saved track and play state from localStorage
-const savedTrackIndex = localStorage.getItem("currentTrackIndex");
-const savedPlayState = localStorage.getItem("isPlaying");
+// Login to Spotify
+function loginToSpotify() {
+  const scopes = 'user-read-playback-state user-modify-playback-state streaming';
+  const authUrl = `https://accounts.spotify.com/authorize?client_id=${clientId}&response_type=token&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scopes)}`;
 
-// Set initial track index to the saved track or default to the first track
-let currentTrackIndex = savedTrackIndex ? parseInt(savedTrackIndex) : 0;
-audioPlayer.src = tracks[currentTrackIndex].src;
-
-// If there was a saved play state, play the audio
-if (savedPlayState === "true") {
-  audioPlayer.play();
-} else {
-  audioPlayer.pause();
+  window.location = authUrl;
 }
 
-// Loop the audio for continuous play
-audioPlayer.loop = true;
-
-// Function to change track based on user selection
-function changeTrack(trackIndex) {
-  currentTrackIndex = trackIndex;
-  localStorage.setItem("currentTrackIndex", currentTrackIndex); // Save the track index
-  audioPlayer.src = tracks[currentTrackIndex].src; // Change the track
-  audioPlayer.play(); // Start playing the new track
+// Extract token from URL after login
+function getAccessTokenFromUrl() {
+  const hash = window.location.hash.substring(1);
+  const params = new URLSearchParams(hash);
+  accessToken = params.get('access_token');
+  if (accessToken) {
+    document.getElementById('login-section').style.display = 'none';
+    document.getElementById('player-controls').style.display = 'block';
+    fetchCurrentTrack();
+  }
 }
 
-// Event listener for the audio playing
-audioPlayer.addEventListener("play", () => {
-  localStorage.setItem("isPlaying", "true"); // Mark the audio as playing in localStorage
-});
-
-// Event listener for the audio paused
-audioPlayer.addEventListener("pause", () => {
-  localStorage.setItem("isPlaying", "false"); // Mark the audio as paused in localStorage
-});
-
-// Function to pause the audio
-function togglePause() {
-  if (audioPlayer.paused) {
-    audioPlayer.play();
+// Fetch currently playing track
+async function fetchCurrentTrack() {
+  const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  if (response.ok) {
+    const data = await response.json();
+    const trackName = data.item.name;
+    document.getElementById('track-name').textContent = trackName;
   } else {
-    audioPlayer.pause();
+    document.getElementById('track-name').textContent = 'None';
   }
 }
 
-// Event listener for the page load to make sure the audio continues when the page is loaded
-window.addEventListener("load", function () {
-  if (audioPlayer.src && localStorage.getItem("isPlaying") === "true") {
-    audioPlayer.play();
-  }
-});
+// Play/Pause playback
+async function playPause() {
+  const playPauseEndpoint = isPlaying
+    ? 'https://api.spotify.com/v1/me/player/pause'
+    : 'https://api.spotify.com/v1/me/player/play';
+  await fetch(playPauseEndpoint, {
+    method: 'PUT',
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  isPlaying = !isPlaying;
+}
 
-// Optional: Pause the music when user navigates away (if needed)
-window.addEventListener("beforeunload", function () {
-  audioPlayer.pause();
-});
+// Next track
+async function nextTrack() {
+  await fetch('https://api.spotify.com/v1/me/player/next', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  fetchCurrentTrack();
+}
+
+// Previous track
+async function previousTrack() {
+  await fetch('https://api.spotify.com/v1/me/player/previous', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  fetchCurrentTrack();
+}
+
+// Initialize the app
+window.onload = () => {
+  getAccessTokenFromUrl();
+};

@@ -5,23 +5,28 @@ const topicInput = document.getElementById('topic');
 const loadingIndicator = document.getElementById('loading');
 const referencesList = document.getElementById('referencesList');
 
-// Hugging Face API endpoint and token
-const HF_API_URL = 'https://api-inference.huggingface.co/models/gpt2'; // Use GPT-2 model
-const HF_API_TOKEN = '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'; // Replace with your Hugging Face API token
+// OpenAI API endpoint and token
+const apiUrl = "https://api.openai.com/v1/chat/completions"; // URL endpoint OpenAI
+const OPENAI_API_TOKEN = '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'; // Replace with your OpenAI API key
 
-// Fetch references from Hugging Face API
+// Fetch references from OpenAI API
 async function fetchReferences(topic) {
   try {
     loadingIndicator.style.display = 'block';
 
-    const response = await fetch(HF_API_URL, {
+    const response = await fetch(apiUrl), {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${HF_API_TOKEN}`,
+        'Authorization': `Bearer ${OPENAI_API_TOKEN}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        inputs: `Provide study material references and insights about: ${topic}`,
+        model: 'gpt-3.5-turbo', // Use ChatGPT model
+        messages: [
+          { role: 'system', content: 'You are a helpful assistant providing study material references and insights.' },
+          { role: 'user', content: `Provide study material references and insights about: ${topic}` },
+        ],
+        max_tokens: 500, // Limit response length
       }),
     });
 
@@ -32,7 +37,7 @@ async function fetchReferences(topic) {
     const data = await response.json();
 
     // Parse and display suggestions
-    const suggestions = data[0]?.generated_text.split('\n').filter((line) => line.trim() !== '') || [];
+    const suggestions = data.choices[0]?.message.content.split('\n').filter((line) => line.trim() !== '') || [];
     referencesList.innerHTML = '';
     if (suggestions.length === 0) {
       referencesList.innerHTML = '<li>No references found. Try a different topic.</li>';

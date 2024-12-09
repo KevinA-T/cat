@@ -8,38 +8,47 @@
 </head>
 <body>
   <h1>My Calendar</h1>
-  
-  <!-- Event Form -->
-  <form id="calendarForm">
-    <label for="eventTitle">Event Title:</label>
-    <input type="text" id="eventTitle" placeholder="Enter event title" required>
-    
-    <label for="eventDate">Event Date:</label>
-    <input type="date" id="eventDate" required>
-    
-    <button type="submit">Add Event</button>
-  </form>
-  
-  <!-- Event List -->
-  <h2>Upcoming Events</h2>
-  <ul id="eventList"></ul>
-  
-  <!-- Back to Homepage -->
-  <button id="backButton" onclick="window.location.href = 'homepage.html';">Back to Homepage</button>
-  <div id="music-controls">
-    <label for="trackSelect">Choose your music:</label>
-    <select id="trackSelect" onchange="changeTrack(this.value)">
-      <option value="0">Relaxing Waves</option>
-      <option value="1">Calm Piano</option>
-      <option value="2">Forest Ambience</option>
-    </select>
+
+  <!-- Content Wrapper -->
+  <div class="content-wrapper">
+    <!-- Event Form -->
+    <form id="calendarForm">
+      <label for="eventTitle">Event Title:</label>
+      <input type="text" id="eventTitle" placeholder="Enter event title" required>
+      
+      <label for="eventDate">Event Date:</label>
+      <input type="date" id="eventDate" required>
+      
+      <button type="submit">Add Event</button>
+    </form>
+
+    <!-- Event List -->
+    <div class="event-list-wrapper">
+      <h2>Upcoming Events</h2>
+      <ul id="eventList"></ul>
+    </div>
   </div>
 
-  <!-- Display current track -->
-  <div id="current-track">
-    <p id="track-name">Current Track: Relaxing Waves</p>
+  <!-- Back to Homepage -->
+  <button id="backButton" onclick="window.location.href = 'homepage.html';">Back to Homepage</button>
+  
+ <!-- Spotify Player -->
+<div id="spotify-player">
+  <h3>Spotify Music Player</h3>
+  <div id="login-section">
+    <button id="spotify-login" onclick="loginToSpotify()">Log in to Spotify</button>
   </div>
+  <div id="player-controls" style="display: none;">
+    <p id="current-track">Now Playing: <span id="track-name">None</span></p>
+    <button onclick="playPause()">▶️/⏸️</button>
+    <button onclick="nextTrack()">⏭️</button>
+    <button onclick="previousTrack()">⏮️</button>
+  </div>
+</div>
+
+
   <script src="music.js"></script>
   <script src="calendar.js"></script>
+  <div id="notification-container"></div>
 </body>
 </html>

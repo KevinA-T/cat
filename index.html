@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
@@ -13,18 +12,14 @@
         <h1>Login</h1>
         <div class="textbox">
             <input type="email" id="loginEmail" placeholder="Email" required>
-            <i class='bx bxs-user'></i>
         </div>
         <div class="textbox">
             <input type="password" id="loginPassword" placeholder="Password" required>
-            <i class='bx bxs-lock-alt'></i>
         </div>
-
         <div class="checkbox">
             <label><input type="checkbox"> Remember Me</label>
             <a href="#">Forget Password</a>
         </div>
-
         <button type="button" onclick="loginUser()">Login</button>
         <div class="register">
             <p>Don't have an account? <a href="register.html">Register</a></p>
@@ -32,71 +27,48 @@
     </form>
 </div>
 
+<!-- Notification container -->
+<div id="notification-container"></div>
+
 <script>
+    function showNotification(type, message) {
+        const container = document.getElementById("notification-container");
+        const notification = document.createElement("div");
+        notification.className = `notification ${type}`;
+        notification.innerHTML = `<span>${message}</span>`;
+        container.appendChild(notification);
+
+        // Automatically remove the notification after 3 seconds
+        setTimeout(() => {
+            notification.style.animation = "fadeOut 0.3s ease";
+            notification.addEventListener("animationend", () => notification.remove());
+        }, 3000);
+    }
+
     function loginUser() {
         const email = document.getElementById("loginEmail").value;
         const password = document.getElementById("loginPassword").value;
 
-        const storedUser = localStorage.getItem(email);
+        // Retrieve the users array from localStorage
+        const users = JSON.parse(localStorage.getItem("users")) || [];
 
-        if (!storedUser) {
-            alert("User not found! Please register first.");
+        // Find the user with matching email and password
+        const user = users.find(user => user.email === email && user.password === password);
+
+        if (!user) {
+            showNotification("error", "Invalid email or password! Please try again.");
             return;
         }
 
-        const userData = JSON.parse(storedUser);
-
-        if (userData.password !== password) {
-            alert("Incorrect password! Please try again.");
-            return;
-        }
-
-        alert(`Welcome back, ${userData.username}!`);
-        window.location.href = "homepage.html"; // Redirect to homepage
-    }
-</script>
-<script>
-    function showNotification(type, message) {
-        // Create notification element
-        const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        
-        // Add icon based on type
-        let icon = '';
-        if (type === 'success') icon = '<i class="bx bxs-check-circle"></i>';
-        if (type === 'error') icon = '<i class="bx bxs-error-circle"></i>';
-        if (type === 'info') icon = '<i class="bx bxs-info-circle"></i>';
-        
-        // Add content
-        notification.innerHTML = `${icon} <span>${message}</span>`;
-        
-        // Append to notification container
-        const container = document.getElementById('notification-container');
-        container.appendChild(notification);
-        
-        // Remove notification after 3 seconds
+        showNotification("success", `Welcome back, ${user.username}!`);
         setTimeout(() => {
-            notification.style.animation = 'fadeOut 0.3s ease';
-            notification.addEventListener('animationend', () => notification.remove());
-        }, 3000);
+            window.location.href = "homepage.html"; // Redirect to homepage
+        }, 1500);
     }
 </script>
-<script>
-function redirectToDashboard() {
-    const username = document.querySelector('input[placeholder="Username"]').value;
-    const password = document.querySelector('input[placeholder="Password"]').value;
 
-    if (username === 'test' && password === '1234') {
-        showNotification('success', 'Login successful!');
-        setTimeout(() => {
-            window.location.href = "homepage.html";
-        }, 1500); // Redirect after 1.5 seconds
-    } else {
-        showNotification('error', 'Invalid username or password!');
-    }
-}
-</script>
-<div id="notification-container"></div>
-
+<style>
+    /* Use the same notification styles from the Register Page */
+</style>
 </body>
 </html>
