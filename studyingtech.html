@@ -41,21 +41,11 @@
       <p id="recommendationText"></p>
     </div>
   </div>
-  <div id="music-controls">
-    <label for="trackSelect">Choose your music:</label>
-    <select id="trackSelect" onchange="changeTrack(this.value)">
-      <option value="0">Relaxing Waves</option>
-      <option value="1">Calm Piano</option>
-      <option value="2">Forest Ambience</option>
-    </select>
-  </div>
 
-  <!-- Display current track -->
-  <div id="current-track">
-    <p id="track-name">Current Track: Relaxing Waves</p>
-  </div>
-  <script src="music.js"></script>
+  <!-- Back Button -->
+  <button id="backButton" onclick="window.location.href = 'homepage.html';">Back</button>
+
+
   <script src="studyingtech.js"></script>
-  <button id="backButton" onclick="window.location.href = 'homepage.html';">back</button>
 </body>
 </html>
