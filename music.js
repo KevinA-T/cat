@@ -4,9 +4,9 @@ const trackName = document.getElementById("track-name");
 
 // Audio tracks (Replace with your actual file paths)
 const tracks = [
-  { name: "Relaxing Waves", src: "audio/LOFI.mp3" },
-  { name: "Calm Piano", src: "audio/piano relax.mp3" },
-  { name: "Forest Ambience", src: "audio/relax piano.mp3" }
+  { name: "Lo-fi", src: "audio/LOFI.mp3" },
+  { name: "Piano 1", src: "audio/piano relax.mp3" },
+  { name: "Piano 2", src: "audio/relax piano.mp3" }
 ];
 
 // Create an audio element
