@@ -27,7 +27,7 @@ body {
 
 h1, h2 {
   text-align: center;
-  color: #4a90e2;
+  color: #6d5a1e;
 }
 
 form {
@@ -54,7 +54,7 @@ input {
 }
 
 button {
-  background-color: #4a90e2;
+  background-color: #6d5a1e;
   color: white;
   border: none;
   border-radius: 4px;
@@ -66,7 +66,7 @@ button {
 }
 
 button:hover {
-  background-color: #357ab7;
+  background-color: #545520;
 }
 
 canvas {

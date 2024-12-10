@@ -42,7 +42,7 @@ input, select {
 button {
   width: 100%;
   padding: 10px;
-  background-color: #007bff;
+  background-color: #6d5a1e;
   color: white;
   border: none;
   border-radius: 5px;
@@ -52,7 +52,7 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #473e1d;
 }
 
 #recommendation-container {
@@ -66,7 +66,7 @@ button:hover {
 /* Back Button */
 /* Back Button */
 #backButton {
-  background-color: #007bff;
+  background-color: #6d5a1e;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -82,7 +82,7 @@ button:hover {
 }
 
 #backButton:hover {
-  background-color: #0056b3;
+  background-color: #473e1d;
 }
 
 #music-player {

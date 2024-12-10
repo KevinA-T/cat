@@ -50,7 +50,7 @@ textarea, input[type="text"] {
 }
 
 button {
-  background-color: #007bff;
+  background-color: #6d5a1e;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -65,7 +65,7 @@ button:hover {
 }
 
 #back-home-btn {
-  background-color: #007bff;
+  background-color: #6d5a1e;
   color: white;
   border: none;
   padding: 10px 20px;
