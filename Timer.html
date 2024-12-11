@@ -33,7 +33,7 @@
     }
 
     #countdown {
-      font-size: 36px;
+      font-size: 48px; /* Increased font size */
       font-weight: bold;
       color: #2e7d32;
       margin: 20px 0;
@@ -54,7 +54,7 @@
       font-size: 16px;
     }
 
-       button {
+    button {
       background-color: #6d5a1e;
       color: #fff;
       border: none;
@@ -89,35 +89,53 @@
       background-color: #810a0a;
     }
 
+    /* Notification Styles */
+    #notification-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .notification {
+      padding: 15px 20px;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s;
+    }
   </style>
 </head>
 <body>
-
   <div id="timer-container">
     <h1>Catify Study Timer</h1>
     <div>
       <label for="studyTimeInput">Study Time (minutes):</label>
       <input type="number" id="studyTimeInput" value="25" min="1">
     </div>
-    
     <div>
       <label for="breakTimeInput">Break Time (minutes):</label>
       <input type="number" id="breakTimeInput" value="5" min="1">
     </div>
-    
     <div id="status">Timer Status</div>
     <div id="countdown">00:00</div>
-  
     <div>
       <button id="startButton">Start</button>
       <button id="stopButton" disabled>Pause</button>
       <button id="resetButton" disabled>Reset</button>
     </div>
   </div>
-  
+
+  <!-- Notification Sound -->
+  <audio id="notification-sound" src="audio/y2mate.com - Cat meow sound effect.mp3"></audio>
+
   <!-- Notification Container -->
   <div id="notification-container"></div>
-  
 
   <script>
     let timerInterval = null;
@@ -133,7 +151,7 @@
     const startButton = document.getElementById("startButton");
     const stopButton = document.getElementById("stopButton");
     const resetButton = document.getElementById("resetButton");
-    const notificationContainer = document.getElementById("notification-container");
+    const notificationSound = document.getElementById("notification-sound");
 
     // Format time (MM:SS)
     function formatTime(seconds) {
@@ -152,16 +170,14 @@
       const notification = document.createElement('div');
       notification.classList.add('notification');
       notification.textContent = message;
-      notificationContainer.appendChild(notification);
-      setTimeout(() => {
-        notification.remove();
-      }, 3000);
+      document.body.appendChild(notification);
+
+      setTimeout(() => notification.remove(), 3000);
     }
 
     // Start or resume the timer
     function startTimer() {
       if (!isPaused) {
-        // Initialize the time based on user input
         const studyTime = parseInt(studyTimeInput.value) * 60; // Convert minutes to seconds
         const breakTime = parseInt(breakTimeInput.value) * 60; // Convert minutes to seconds
         currentTime = isStudySession ? studyTime : breakTime;
@@ -174,19 +190,16 @@
         currentTime--;
         updateTimerDisplay(currentTime);
 
-        // Save current time to localStorage
-        localStorage.setItem('currentTime', currentTime);
-
         if (currentTime <= 0) {
           clearInterval(timerInterval);
+          notificationSound.play();
           showNotification(isStudySession ? "Time for a break!" : "Time to study!");
-          isStudySession = !isStudySession; // Toggle session
-          isPaused = false; // Reset pause state for the next session
-          startTimer(); // Automatically start the next session
+          isStudySession = !isStudySession;
+          isPaused = false;
+          startTimer();
         }
       }, 1000);
 
-      // Disable/Enable buttons
       startButton.disabled = true;
       stopButton.disabled = false;
       resetButton.disabled = false;
@@ -206,12 +219,8 @@
       clearInterval(timerInterval);
       isStudySession = true;
       isPaused = false;
-      
-      // Reset the timer display to the input values
-      const studyTime = parseInt(studyTimeInput.value) * 60; // Convert minutes to seconds
-      currentTime = studyTime;
+      currentTime = parseInt(studyTimeInput.value) * 60;
       updateTimerDisplay(currentTime);
-
       statusEl.textContent = "Timer Reset";
       startButton.disabled = false;
       stopButton.disabled = true;
@@ -222,31 +231,6 @@
     startButton.addEventListener("click", startTimer);
     stopButton.addEventListener("click", pauseTimer);
     resetButton.addEventListener("click", resetTimer);
-
-    // Load saved timer state on page load
-    window.onload = function() {
-      if (localStorage.getItem('currentTime')) {
-        currentTime = parseInt(localStorage.getItem('currentTime'));
-        updateTimerDisplay(currentTime);
-      }
-    }
   </script>
-<div id="music-controls">
-  <label for="trackSelect">Choose your music:</label>
-  <select id="trackSelect" onchange="changeTrack(this.value)">
-   <option value="0">Lo-fi</option>
-      <option value="1">Piano 1</option>
-      <option value="2">Piano 2</option>
-  </select>
-</div>
-
-<!-- Display current track -->
-<div id="current-track">
-  <p id="track-name">Current Track: Relaxing Waves</p>
-</div>
-<footer>
-  <button id="logoutButton" onclick="window.location.href = 'homepage.html';">back</button>
-</footer>
-<script src="music.js"></script>
 </body>
 </html>

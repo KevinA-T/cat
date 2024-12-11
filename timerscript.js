@@ -110,3 +110,50 @@ function resetTimer() {
 startButton.addEventListener("click", startTimer);
 stopButton.addEventListener("click", pauseTimer);
 resetButton.addEventListener("click", resetTimer);
+
+// Select the notification sound element
+const notificationSound = document.getElementById("notificationSound");
+
+// Play notification sound
+function playNotificationSound() {
+  notificationSound.currentTime = 0; // Reset to start
+  notificationSound.play().catch(error => console.error("Error playing sound:", error));
+}
+
+// Updated startTimer to include sound when the timer ends
+function startTimer() {
+  if (!isPaused) {
+    // Initialize time
+    const studyTime = parseInt(studyTimeInput.value) * 60; // Convert minutes to seconds
+    const breakTime = parseInt(breakTimeInput.value) * 60; // Convert minutes to seconds
+    currentTime = isStudySession ? studyTime : breakTime;
+  }
+
+  statusEl.textContent = isStudySession ? "Study Session" : "Break Time";
+  updateTimerDisplay(currentTime);
+
+  // Start the countdown
+  timerInterval = setInterval(() => {
+    currentTime--;
+    updateTimerDisplay(currentTime);
+
+    if (currentTime <= 0) {
+      clearInterval(timerInterval);
+
+      // Play sound and show notification
+      playNotificationSound();
+      showNotification(isStudySession ? "Time for a break!" : "Time to study!", "success");
+
+      // Switch session type and restart timer
+      isStudySession = !isStudySession;
+      isPaused = false;
+      startTimer(); // Automatically start the next session
+    }
+  }, 1000);
+
+  // Button states
+  startButton.disabled = true;
+  stopButton.disabled = false;
+  resetButton.disabled = false;
+  showNotification("Timer started!", "info");
+}

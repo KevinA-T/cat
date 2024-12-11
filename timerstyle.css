@@ -221,3 +221,10 @@ footer {
 #logoutButton:hover {
   background-color: #49451c;
 }
+/* Adjusted timer font size */
+#countdown {
+  font-size: 64px; /* Increased for better visibility */
+  font-weight: bold;
+  color: #2e7d32;
+  margin: 20px 0;
+}
