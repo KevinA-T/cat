@@ -27,7 +27,7 @@ body {
   }
   
   #countdown {
-    font-size: 36px;
+    font-size: 68px;
     font-weight: bold;
     color: #2e7d32;
     margin: 20px 0;
@@ -144,7 +144,6 @@ body {
     }
   }
   
-  
   #backButton {
     background-color: #6d5a1e;
     color: white;
@@ -225,7 +224,7 @@ footer {
 }
 /* Adjusted timer font size */
 #countdown {
-  font-size: 64px; /* Increased for better visibility */
+  font-size: 68px; /* Increased for better visibility */
   font-weight: bold;
   color: #2e7d32;
   margin: 20px 0;
